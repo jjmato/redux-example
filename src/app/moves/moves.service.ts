@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { filter, flatMap, map, tap, takeUntil } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import { AuthService } from './../auth/auth.service';
-import { SetMovesAction } from './moves.actions';
+import { SetMovesAction, UnsetMovesAction } from './moves.actions';
 import { Move, mapAfDocChangesToMoves } from './moves.model';
 
 @Injectable({

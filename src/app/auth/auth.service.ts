@@ -9,7 +9,7 @@ import {
   ActiveLoadingAction,
   DeactiveLoadingAction
 } from '../shared/ui.actions';
-import { SetUserAction } from './auth.actions';
+import { SetUserAction, UnsetUserAction } from './auth.actions';
 import { createUser, User } from './user.model';
 
 @Injectable({
@@ -114,6 +114,7 @@ export class AuthService {
       .then(res => {
         this._logout$.next();
         this._logout$.complete();
+        this._appStore.dispatch(new UnsetUserAction());
         this._appStore.dispatch(new DeactiveLoadingAction());
       })
       .catch(err => {
