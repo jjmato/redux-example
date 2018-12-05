@@ -1,3 +1,4 @@
+import { MovesService } from './../moves.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -15,7 +16,10 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   moves: Move[];
 
-  constructor(private _appStore: Store<AppState>) {}
+  constructor(
+    private _appStore: Store<AppState>,
+    private _moveSrv: MovesService
+  ) {}
 
   ngOnInit() {
     this._appStore
@@ -27,5 +31,10 @@ export class DetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._destroyed.next();
     this._destroyed.complete();
+  }
+
+  delete(move: Move) {
+    console.log('DetailComponent.delete: ', move);
+    this._moveSrv.deleteMove(move.uid);
   }
 }

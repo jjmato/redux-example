@@ -18,12 +18,13 @@
                         <tr *ngFor="let move of moves">
                             <td>{{move.description}}</td>
                             <td>{{move.quantity | currency}}</td>
-                            <td><span [ngClass]="{
+                            <td><strong [ngClass]="{
                               'text-success': move.type === 'in',
                               'text-danger': move.type === 'out'
-                            }">{{move.type | uppercase}}</span></td>
+                            }">{{move.type | uppercase}}</strong></td>
                             <td>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger"
+                                        (click)="delete(move)">
                                     <i class="fa fas fa-trash"></i>
                                     Delete
                                 </button>

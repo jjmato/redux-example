@@ -40,10 +40,12 @@ export class AuthService {
   initAuthListener() {
     this._afAuth.authState
       .pipe(
-        takeUntil(this._logout$),
         filter(Boolean),
         flatMap((fbUser: firebase.User) =>
-          this._afDB.doc(`${fbUser.uid}/user`).valueChanges()
+          this._afDB
+            .doc(`${fbUser.uid}/user`)
+            .valueChanges()
+            .pipe(takeUntil(this.logout$))
         ),
         map(userFromFb => createUser({ ...userFromFb })),
         tap(user => console.log(user))

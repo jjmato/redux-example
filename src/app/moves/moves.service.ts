@@ -41,9 +41,12 @@ export class MovesService {
       .doc(`${uid}/moves`)
       .collection('moves')
       .add({ ...move });
-
     promise.then(resp => console.log(resp)).catch(err => console.error(err));
-
     return promise;
+  }
+
+  deleteMove(uid: string) {
+    const user = this._authSrv.user;
+    this._afDB.doc(`${user.uid}/moves/moves/${uid}`).delete();
   }
 }
