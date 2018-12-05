@@ -30,6 +30,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## LOG
 Generamos componentes
 
-1. login `ng g c auth/login --spce=false -is`
-1. register `ng g c auth/register --spce=false -is`
 1. dashboard `ng g c dashboard --spce=false -is`
+1. auth components
+  1. login `ng g c auth/login --spce=false -is`
+  1. register `ng g c auth/register --spce=false -is`
+1. shared components
+  1. footer `ng g c shared/footer --spec=false -is`
+  1. navbar `ng g c shared/navbar --spec=false -is`
+  1. sidebar `ng g c shared/sidebar --spec=false -is`
