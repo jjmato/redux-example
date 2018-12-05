@@ -1,3 +1,4 @@
+import { MovesService } from './../moves/moves.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class DashboardComponent implements OnInit {
-
-  constructor() { }
+  constructor(private _movesSrc: MovesService) {}
 
   ngOnInit() {
+    this._movesSrc.initMovesListener();
   }
-
 }
