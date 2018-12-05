@@ -1,51 +1,60 @@
 <nav class="sidebar sidebar-offcanvas">
-  <ul class="nav">
-    <li class="nav-item nav-profile">
-      <div class="nav-link">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <div class="nav-link">
 
-        <div class="user-wrapper">
-          <div class="profile-image">
-            <img src="assets/images/faces/face1.jpg" alt="profile image">
-          </div>
+                <div class="user-wrapper">
+                    <div class="profile-image">
+                        <img src="assets/images/faces/face1.jpg"
+                             alt="profile image">
+                    </div>
 
-          <div class="text-wrapper">
-            <p class="profile-name">Cristobal Colón</p>
-            <div>
-              <small class="designation text-muted">Gerente</small>
+                    <div class="text-wrapper">
+                        <p class="profile-name">Cristobal Colón</p>
+                        <div>
+                            <small class="designation text-muted">Gerente</small>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
-        </div>
+        </li>
 
-      </div>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               [routerLink]="['/']"
+               routerLinkActive="router-link-active">
+                <i class="menu-icon fa fa-tachometer-alt"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/']" routerLinkActive="router-link-active" >
-        <i class="menu-icon fa fa-tachometer-alt"></i>
-        <span class="menu-title">Dashboard</span>
-      </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               [routerLink]="['/items']"
+               routerLinkActive="router-link-active">
+                <i class="menu-icon fa fa-clipboard-list"></i>
+                <span class="menu-title">Items</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/items']" routerLinkActive="router-link-active" >
-        <i class="menu-icon fa fa-clipboard-list"></i>
-        <span class="menu-title">Items</span>
-      </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link"
+               [routerLink]="['/detail']"
+               routerLinkActive="router-link-active">
+                <i class="menu-icon fa fa-table"></i>
+                <span class="menu-title">Detail</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/detail']" routerLinkActive="router-link-active" >
-        <i class="menu-icon fa fa-table"></i>
-        <span class="menu-title">Detail</span>
-      </a>
-    </li>
+        <li class="nav-item">
+            <a class="nav-link cursor"
+               (click)="logout()"
+               routerLinkActive="router-link-active">
+                <i class="menu-icon fa fa-sign-out-alt"></i>
+                <span class="menu-title">Close</span>
+            </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link cursor" [routerLink]="['/login']" routerLinkActive="router-link-active" >
-        <i class="menu-icon fa fa-sign-out-alt"></i>
-        <span class="menu-title">Close</span>
-      </a>
-    </li>
-
-  </ul>
+    </ul>
 </nav>
