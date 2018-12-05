@@ -3,13 +3,14 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, flatMap, map, tap, takeUntil } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import {
   ActiveLoadingAction,
   DeactiveLoadingAction
 } from '../shared/ui.actions';
-import { createUser } from './user.modal';
+import { SetUserAction } from './auth.actions';
+import { createUser } from './user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,19 @@ export class AuthService {
   }
 
   initAuthListener() {
-    this._afAuth.authState.subscribe((fbUser: firebase.User) =>
-      console.log(fbUser)
-    );
+    this._afAuth.authState
+      .pipe(
+        takeUntil(this.isAuth$),
+        filter(Boolean),
+        flatMap((fbUser: firebase.User) =>
+          this._afDB.doc(`${fbUser.uid}/user`).valueChanges()
+        ),
+        map(userFromFb => createUser({ ...userFromFb })),
+        tap(user => console.log(user))
+      )
+      .subscribe(user => {
+        this._appStore.dispatch(new SetUserAction(user));
+      });
   }
 
   createUser(name: string, email: string, password: string): Promise<void> {
