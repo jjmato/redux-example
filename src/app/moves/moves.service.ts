@@ -5,7 +5,7 @@ import { filter, flatMap, map, tap } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import { AuthService } from './../auth/auth.service';
 import { SetMovesAction } from './moves.actions';
-import { Move } from './moves.model';
+import { Move, mapAfDocChangesToMoves } from './moves.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,9 @@ export class MovesService {
         filter(auth => Boolean(auth.user)),
         map(auth => auth.user.uid),
         flatMap(uid =>
-          this._afDB.collection(`${uid}/moves/moves`).valueChanges()
+          this._afDB.collection(`${uid}/moves/moves`).snapshotChanges()
         ),
+        map(docChange => mapAfDocChangesToMoves(docChange)),
         tap(moves => console.log(moves))
       )
       .subscribe((moves: Move[]) =>
