@@ -27,6 +27,10 @@ export class AuthService {
     return this._afAuth.authState.pipe(map(Boolean));
   }
 
+  get logout$(): Observable<void> {
+    return this._logout$.asObservable();
+  }
+
   constructor(
     private _afAuth: AngularFireAuth,
     private _afDB: AngularFirestore,

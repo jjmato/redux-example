@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Detalle de ingreso egreso</h4>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let move of moves">
+                            <td>{{move.description}}</td>
+                            <td>{{move.quantity | currency}}</td>
+                            <td><span [ngClass]="{
+                              'text-success': move.type === 'in',
+                              'text-danger': move.type === 'out'
+                            }">{{move.type | uppercase}}</span></td>
+                            <td>
+                                <button class="btn btn-danger">
+                                    <i class="fa fas fa-trash"></i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>

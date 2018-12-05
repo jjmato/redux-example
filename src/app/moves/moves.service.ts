@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { filter, flatMap, map, tap } from 'rxjs/operators';
+import { filter, flatMap, map, tap, takeUntil } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import { AuthService } from './../auth/auth.service';
 import { SetMovesAction } from './moves.actions';
@@ -21,6 +21,7 @@ export class MovesService {
     this._appStore
       .select('auth')
       .pipe(
+        takeUntil(this._authSrv.logout$),
         filter(auth => Boolean(auth.user)),
         map(auth => auth.user.uid),
         flatMap(uid =>
