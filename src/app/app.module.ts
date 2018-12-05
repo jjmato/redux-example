@@ -8,6 +8,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { ItemsComponent } from './items/items.component';
+import { DetailComponent } from './items/detail/detail.component';
+import { StatisticsComponent } from './items/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     DashboardComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    ItemsComponent,
+    DetailComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
