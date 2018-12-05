@@ -12,10 +12,15 @@ import { map, filter } from 'rxjs/operators';
 })
 export class StatisticsComponent implements OnInit, OnDestroy {
   private _destroyed = new Subject<void>();
+
   totalIn = 0;
   totalOut = 0;
   quantityIn = 0;
   quantityOut = 0;
+  // Doughnut
+  doughnutChartLabels: string[] = ['In', 'Out'];
+  doughnutChartData: number[] = [];
+  doughnutChartType = 'doughnut';
 
   constructor(private _appStore: Store<AppState>) {}
 
@@ -29,6 +34,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       .subscribe(moves => {
         this.setTotal(moves);
         this.setQuantity(moves);
+        this.doughnutChartData = [this.quantityIn, this.quantityOut];
       });
   }
 
@@ -46,13 +52,10 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     if (moves.length <= 0) {
       return;
     }
-    this.quantityIn = moves
-      .filter(move => move.type === 'in')
-      .map(m => m.quantity)
-      .reduce((mq0, mq1) => mq0 + mq1);
-    this.quantityOut = moves
-      .filter(move => move.type === 'out')
-      .map(m => m.quantity)
-      .reduce((mq0, mq1) => mq0 + mq1);
+    const qIn = moves.filter(move => move.type === 'in').map(m => m.quantity);
+    this.quantityIn = qIn.length > 0 ? qIn.reduce((mq0, mq1) => mq0 + mq1) : 0;
+    const qOut = moves.filter(move => move.type === 'out').map(m => m.quantity);
+    this.quantityOut =
+      qOut.length > 0 ? qOut.reduce((mq0, mq1) => mq0 + mq1) : 0;
   }
 }
