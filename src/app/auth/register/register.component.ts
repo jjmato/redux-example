@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ export class RegisterComponent implements OnInit {
     console.log(data);
     this._authSrv
       .createUser(data.name, data.email, data.password)
-      .then(response => this._router.navigateByUrl('/'));
+      .then(response => this._router.navigateByUrl('/'))
+      .catch(err => Swal('Error en el login', err.message, 'error'));
   }
 }
