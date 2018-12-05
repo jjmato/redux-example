@@ -2,34 +2,41 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { filter, flatMap, map, tap, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, flatMap, map, takeUntil, tap } from 'rxjs/operators';
 import { AppState } from '../app.reducer';
 import {
   ActiveLoadingAction,
   DeactiveLoadingAction
 } from '../shared/ui.actions';
 import { SetUserAction } from './auth.actions';
-import { createUser } from './user.model';
+import { createUser, User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private _user: User;
+  private _logout$ = new Subject<void>();
+
+  get user(): User {
+    return { ...this._user };
+  }
+
+  get isAuth$(): Observable<boolean> {
+    return this._afAuth.authState.pipe(map(Boolean));
+  }
+
   constructor(
     private _afAuth: AngularFireAuth,
     private _afDB: AngularFirestore,
     private _appStore: Store<AppState>
   ) {}
 
-  get isAuth$(): Observable<boolean> {
-    return this._afAuth.authState.pipe(map(Boolean));
-  }
-
   initAuthListener() {
     this._afAuth.authState
       .pipe(
-        takeUntil(this.isAuth$),
+        takeUntil(this._logout$),
         filter(Boolean),
         flatMap((fbUser: firebase.User) =>
           this._afDB.doc(`${fbUser.uid}/user`).valueChanges()
@@ -38,6 +45,7 @@ export class AuthService {
         tap(user => console.log(user))
       )
       .subscribe(user => {
+        this._user = user;
         this._appStore.dispatch(new SetUserAction(user));
       });
   }
@@ -98,6 +106,8 @@ export class AuthService {
     const logOutPromise = this._afAuth.auth.signOut();
     logOutPromise
       .then(res => {
+        this._logout$.next();
+        this._logout$.complete();
         this._appStore.dispatch(new DeactiveLoadingAction());
       })
       .catch(err => {
