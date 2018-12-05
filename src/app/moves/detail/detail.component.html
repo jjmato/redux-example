@@ -15,7 +15,7 @@
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let move of moves">
+                        <tr *ngFor="let move of moves | sortMoves">
                             <td>{{move.description}}</td>
                             <td>{{move.quantity | currency}}</td>
                             <td><strong [ngClass]="{
