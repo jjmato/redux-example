@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AppState } from '../app.reducer';
+import {
+  ActiveLoadingAction,
+  DeactiveLoadingAction
+} from '../shared/ui.actions';
 import { createUser } from './user.modal';
 
 @Injectable({
@@ -11,7 +17,8 @@ import { createUser } from './user.modal';
 export class AuthService {
   constructor(
     private _afAuth: AngularFireAuth,
-    private _afDB: AngularFirestore
+    private _afDB: AngularFirestore,
+    private _appStore: Store<AppState>
   ) {}
 
   get isAuth$(): Observable<boolean> {
@@ -25,6 +32,8 @@ export class AuthService {
   }
 
   createUser(name: string, email: string, password: string): Promise<void> {
+    this._appStore.dispatch(new ActiveLoadingAction());
+
     const newUserCredentialPromise = this._afAuth.auth.createUserWithEmailAndPassword(
       email,
       password
@@ -42,7 +51,12 @@ export class AuthService {
         return this._afDB.doc(`${user.uid}/user`).set(user);
       }
     );
-    createUserDataPromise.catch(err => console.error('ERROR: user data', err));
+    createUserDataPromise
+      .then(response => this._appStore.dispatch(new DeactiveLoadingAction()))
+      .catch(err => {
+        console.error('ERROR: user data', err);
+        this._appStore.dispatch(new DeactiveLoadingAction());
+      });
 
     return createUserDataPromise;
   }
@@ -51,17 +65,33 @@ export class AuthService {
     email: string,
     password: string
   ): Promise<firebase.auth.UserCredential> {
+    this._appStore.dispatch(new ActiveLoadingAction());
     const promise = this._afAuth.auth.signInWithEmailAndPassword(
       email,
       password
     );
     promise
-      .then(response => console.log(response))
-      .catch(err => console.error(err));
+      .then(response => {
+        console.log(response);
+        this._appStore.dispatch(new DeactiveLoadingAction());
+      })
+      .catch(err => {
+        console.error(err);
+        this._appStore.dispatch(new DeactiveLoadingAction());
+      });
     return promise;
   }
 
   logout(): Promise<void> {
-    return this._afAuth.auth.signOut();
+    this._appStore.dispatch(new ActiveLoadingAction());
+    const logOutPromise = this._afAuth.auth.signOut();
+    logOutPromise
+      .then(res => {
+        this._appStore.dispatch(new DeactiveLoadingAction());
+      })
+      .catch(err => {
+        this._appStore.dispatch(new DeactiveLoadingAction());
+      });
+    return logOutPromise;
   }
 }
