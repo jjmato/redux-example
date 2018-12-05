@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { AppState } from 'src/app/app.reducer';
+import { filter, map } from 'rxjs/operators';
+import { AppState } from '../moves.reducer';
 import { Move } from './../moves.model';
-import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-statistics',

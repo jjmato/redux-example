@@ -1,14 +1,14 @@
-import { DeactiveLoadingAction } from './../shared/ui.actions';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { AppState } from '../app.reducer';
-import { createMove } from './moves.model';
-import { MovesService } from './moves.service';
-import { takeUntil, map } from 'rxjs/operators';
 import { ActiveLoadingAction } from '../shared/ui.actions';
+import { DeactiveLoadingAction } from './../shared/ui.actions';
+import { createMove } from './moves.model';
+import { AppState } from './moves.reducer';
+import { MovesService } from './moves.service';
 
 @Component({
   selector: 'app-moves',

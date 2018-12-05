@@ -1,10 +1,10 @@
-import { MovesService } from './../moves.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AppState } from 'src/app/app.reducer';
+import { AppState } from '../moves.reducer';
 import { Move } from './../moves.model';
+import { MovesService } from './../moves.service';
 
 @Component({
   selector: 'app-detail',

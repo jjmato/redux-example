@@ -1,10 +1,15 @@
-import { map, retry } from 'rxjs/operators';
-import { Move } from './moves.model';
+import { AppState } from './../app.reducer';
 import * as fromMoves from './moves.actions';
+import { Move } from './moves.model';
 
 export interface MoveState {
   moves: Move[];
 }
+
+export interface AppState extends AppState {
+  moves: MoveState;
+}
+
 const initState: MoveState = {
   moves: []
 };
