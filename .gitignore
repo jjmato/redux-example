@@ -40,4 +40,6 @@ package-lock.json
 Thumbs.db
 
 #deploy config
+.firebase
+.firebaserc
 firebase.json
