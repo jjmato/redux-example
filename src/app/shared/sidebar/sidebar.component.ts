@@ -9,15 +9,23 @@ import { AppState } from 'src/app/app.reducer';
 import { takeUntil, map, filter } from 'rxjs/operators';
 import { UnsetMovesAction } from 'src/app/moves/moves.actions';
 
+let k = 0;
+
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styles: []
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+  
   private _destroyed = new Subject<void>();
+  private _name: string;
 
-  name: string;
+  get name() {
+    console.log('get name', k++);
+    return this._name;
+  }
 
   constructor(
     private _authSrv: AuthService,
@@ -33,7 +41,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         map(state => state.user),
         filter(Boolean)
       )
-      .subscribe(user => (this.name = user.name));
+      .subscribe(user => (this._name = user.name));
   }
 
   ngOnDestroy() {
