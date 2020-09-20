@@ -1,11 +1,11 @@
 {
   "name": "redux-example",
   "version": "1.0.0",
-
   "husky": {
-    "hooks": "pretty-quick --staged & ng lint --fix"
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && ng lint redux-example --fix"
+    }
   },
-
   "scripts": {
     "ng": "ng",
     "prestart": "npm i",

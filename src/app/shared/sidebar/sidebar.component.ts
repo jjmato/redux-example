@@ -1,29 +1,27 @@
-import { Subject } from 'rxjs';
-import { SetUserAction } from './../../auth/auth.actions';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './../../auth/auth.service';
-import Swal from 'sweetalert2';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { takeUntil, map, filter } from 'rxjs/operators';
-import { UnsetMovesAction } from 'src/app/moves/moves.actions';
+import { Subject } from "rxjs";
+import { SetUserAction } from "./../../auth/auth.actions";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthService } from "./../../auth/auth.service";
+import Swal from "sweetalert2";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/app.reducer";
+import { takeUntil, map, filter } from "rxjs/operators";
+import { UnsetMovesAction } from "src/app/moves/moves.actions";
 
 let k = 0;
 
-
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styles: []
+  selector: "app-sidebar",
+  templateUrl: "./sidebar.component.html",
+  styles: [],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  
   private _destroyed = new Subject<void>();
   private _name: string;
 
   get name() {
-    console.log('get name', k++);
+    console.log("get name", k++);
     return this._name;
   }
 
@@ -35,13 +33,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._appStore
-      .select('auth')
+      .select("auth")
       .pipe(
         takeUntil(this._destroyed),
-        map(state => state.user),
+        map((state) => state.user),
         filter(Boolean)
       )
-      .subscribe(user => (this._name = user.name));
+      .subscribe((user) => (this._name = user.name));
   }
 
   ngOnDestroy() {
@@ -52,10 +50,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   logout() {
     this._authSrv
       .logout()
-      .then(res => {
-        this._router.navigateByUrl('login');
+      .then((res) => {
+        this._router.navigateByUrl("login");
         this._appStore.dispatch(new UnsetMovesAction());
       })
-      .catch(err => Swal('Error en el logout', err.message, 'error'));
+      .catch((err) => Swal("Error en el logout", err.message, "error"));
   }
 }
